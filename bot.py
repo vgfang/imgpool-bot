@@ -33,6 +33,9 @@ async def on_ready():
 @commands.has_role(uploadRole)
 async def imgin(ctx, pool=None):
 	validPools = os.listdir(imgPath)
+	if pool == None:
+		pool = "misc"
+
 	if pool not in validPools:
 		await ctx.send("Error: Invalid pool for upload.\nUse `!img opt` to list pools.")
 		return
@@ -68,10 +71,12 @@ async def imgin_error(ctx, error):
 	if isinstance(error, commands.MissingRole):
 		await ctx.send(f"Need role: {uploadRole} to upload images.")
 
+def listdir_no_hidden(path):
+    return list(filter(lambda x: not x.startswith('.'), os.listdir(path)))
+
 @bot.command(name='img', help='Responds with random image.')
 async def img(ctx, pool='all'):
-	validPools = os.listdir(imgPath)
-	validPools.remove('empty')
+	validPools = os.listdir(imgPath) + ["misc"]
 	filename = ''
 	
 	if pool == 'opt': # return directory options
@@ -85,11 +90,11 @@ async def img(ctx, pool='all'):
 		pool = ''
 		allImgs = []
 		for vPool in validPools: # choose random from all directories
-			vPoolImgs = os.listdir(f"{imgPath}{vPool}")
+			vPoolImgs = listdir_no_hidden(f"{imgPath}{vPool}")
 			allImgs += list(map(lambda x: os.path.join(str(vPool),x),vPoolImgs))
 		filename = f"{imgPath}{random.choice(allImgs)}"
 	else:
-		filename = f"{imgPath}{pool}/{random.choice(os.listdir(imgPath+pool))}"
+		filename = f"{imgPath}{pool}/{random.choice(listdir_no_hidden(imgPath+pool))}"
 
 	await ctx.send(file=discord.File(filename))
 	return filename
