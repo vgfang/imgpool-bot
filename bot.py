@@ -40,10 +40,10 @@ async def imgcn(ctx, pool=None):
 		imgCount = 0
 		for vPool in validPools: # choose random from all directories
 			imgCount += len(listdir_no_hidden(f"{imgPath}{vPool}"))
-		await ctx.send(f"Total Image Count: {imgCount}")
+		await ctx.send(f"Total image count: {imgCount}")
 	else: # return pool image count
 		imgCount = len(listdir_no_hidden(f"{imgPath}{pool}"))
-		await ctx.send(f"Image Count for {pool} pool: {imgCount}")
+		await ctx.send(f"Image count for {pool} pool: {imgCount}")
 	return
 
 @bot.command(name='imgin', help='Upload Image into Pool.')
@@ -57,32 +57,27 @@ async def imgin(ctx, pool=None):
 		await ctx.send("Error: Invalid pool for upload.\nUse `!img opt` to list pools.")
 		return
 
+	if len(ctx.message.attachments) == 0:
+		print("Error: No Image.")
+		await ctx.send("Error: Need to upload one (1) image file.")
+		return
+
 	for attachment in ctx.message.attachments:
-		try:
-			url = attachment.url
-		except IndexError:
-			print("Error: No Image.")
-			await ctx.send("Error: Need to upload one (1) image file.")
+		url = attachment.url
+		if url[0:26] != "https://cdn.discordapp.com":
+			await ctx.send("Error: Bad URL.")
 			return
-		else:
-			if url[0:26] != "https://cdn.discordapp.com":
-				await ctx.send("Error: Bad URL.")
-				return
-	
-			r = requests.get(url, stream=True)
-			#if r.headers['content-length'] > ImageSizeCap:
-			#	await ctx.send(f"Error. File exceeded cap: {imageSizeCap} B")
-			#	return
-			if r.headers['content-type'] not in imageFormats:
-				await ctx.send(f"Error: File must be of types: {imageFormats}")
-				return
-			print(2)
-			imageName = f"{uuid.uuid4()}.{r.headers['content-type'][6:]}"
-			imageName = f"{imgPath}{pool}/{imageName}"
-			with open(imageName, 'wb') as outFile:
-				print('Saving image: ' + imageName)
-				shutil.copyfileobj(r.raw, outFile)
-				await ctx.send(f"Success: Image uploaded to pool: {pool}")
+
+		r = requests.get(url, stream=True)
+		if r.headers['content-type'] not in imageFormats:
+			await ctx.send(f"Error: File must be of types: {imageFormats}")
+			return
+		imageName = f"{uuid.uuid4()}.{r.headers['content-type'][6:]}"
+		imageName = f"{imgPath}{pool}/{imageName}"
+		with open(imageName, 'wb') as outFile:
+			print('Saving image: ' + imageName)
+			shutil.copyfileobj(r.raw, outFile)
+			await ctx.send(f"Success: Image uploaded to pool: {pool}")
 
 @imgin.error
 async def imgin_error(ctx, error):
