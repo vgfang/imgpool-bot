@@ -113,7 +113,7 @@ async def img(ctx, pool=None):
 	validPools = listdir_no_hidden(imgPath)
 	filename = ''
 		
-	if pool != None and not pool in validPools:
+	if pool != None and pool not in validPools:
 		await ctx.send("Improper pool input.\nUse `!imgop` to see valid image pools.")
 		return
 
@@ -132,7 +132,7 @@ async def img(ctx, pool=None):
 		if len(imgs) == 0:
 			await ctx.send(f"Error: empty pool `{pool}`.")
 			return
-		filename = f"{imgPath}{pool}/{random.choice()}"
+		filename = f"{imgPath}{pool}/{random.choice(imgs)}"
 
 	# add to ctx.send for filename: filename[len(imgPath):],
 	await ctx.send(file=discord.File(filename))
