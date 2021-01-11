@@ -1,5 +1,5 @@
 # imgpool bot
-Imgpool bot is a discord bot for randomly selecting from image pools and uploading images to image pools on a server. There are 3 levels of permissions in the form of an upload role for uploading images, and an admin role for removing images and modifying image pools. 
+Imgpool bot is a discord bot for uploading images to image pools on a server and randomly selecting from them with commands. There are 3 levels of permissions in the form of an upload role for uploading images, and an admin role for removing images and modifying image pools. 
 
 ## Commands
 - any role
