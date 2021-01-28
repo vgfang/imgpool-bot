@@ -179,7 +179,8 @@ async def imgin(ctx, pool=None):
 async def imgrm(ctx, filename=None):
 	check = check_filename(filename)
 	if check != "Success":
-		return check
+		await ctx.send(check)
+		return
 
 	validPools = listdir_no_hidden(imgPath)
 	for vPool in validPools: # choose random from all directories
