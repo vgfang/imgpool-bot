@@ -130,7 +130,7 @@ async def img(ctx, pool=None):
 	else:
 		imgs = listdir_no_hidden(imgPath+pool)
 		if len(imgs) == 0:
-			await ctx.send(f"Error: empty pool `{pool}`.")
+			await ctx.send(f"Error: Empty pool `{pool}`.")
 			return
 		filename = f"{imgPath}{pool}/{random.choice(imgs)}"
 
@@ -153,7 +153,6 @@ async def imgin(ctx, pool=None):
 		return
 
 	if len(ctx.message.attachments) == 0:
-		print("Error: No Image.")
 		await ctx.send("Error: Need to upload one (1) image file.")
 
 	for attachment in ctx.message.attachments:
@@ -170,7 +169,7 @@ async def imgin(ctx, pool=None):
 		filedirname = f"{imgPath}{pool}/{filename}"
 		with open(filedirname, 'wb') as outFile:
 			shutil.copyfileobj(r.raw, outFile)
-			await ctx.send(f"Success: Image uploaded to pool: `{pool}`, filename: `{filename}`")
+			await ctx.send(f"Success: `{pool}`/`{filename}` uploaded.")
 
 
 # ADMIN COMMANDS
@@ -236,21 +235,21 @@ async def imgpdel(ctx, pool=None):
 	try:
 		shutil.rmtree(f"{imgPath}{pool}")
 	except:
-		await ctx.send("Internal Error: pool `{pool}` deletion failure.")
+		await ctx.send(f"Internal Error: Pool `{pool}` deletion failure.")
 		return
-	await ctx.send(f"Success: pool `{pool}` has been deleted.")
+	await ctx.send(f"Success: Pool `{pool}` has been deleted.")
 
 # ERROR CHECKING
 @imgin.error
 async def imgin_error(ctx, error):
 	if isinstance(error, commands.MissingAnyRole):
-		await ctx.send(f"Error: need role `{uploadRole}` to upload images.")
+		await ctx.send(f"Error: Need role `{uploadRole}` to upload images.")
 
 @imgpadd.error
 @imgpmod.error
 @imgpdel.error
 async def on_pool_fn_error(ctx, error):
 	if isinstance(error, (commands.MissingAnyRole)):
-		await ctx.send(f"Error: need role `{adminRole}` for image deletion and image pool management.")
+		await ctx.send(f"Error: Need role `{adminRole}` for image deletion and image pool management.")
 
 bot.run(TOKEN)
