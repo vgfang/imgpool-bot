@@ -243,14 +243,14 @@ async def imgpdel(ctx, pool=None):
 # ERROR CHECKING
 @imgin.error
 async def imgin_error(ctx, error):
-	if isinstance(error, commands.MissingRole):
-		await ctx.send(f"Need role: `{uploadRole}` to upload images.")
+	if isinstance(error, commands.MissingAnyRole):
+		await ctx.send(f"Error: need role `{uploadRole}` to upload images.")
 
 @imgpadd.error
 @imgpmod.error
 @imgpdel.error
 async def on_pool_fn_error(ctx, error):
 	if isinstance(error, (commands.MissingAnyRole)):
-		await ctx.send(f"Insufficient Permissions.\nNeed role: `{adminRole}` for image deletion and image pool management.")
+		await ctx.send(f"Error: need role `{adminRole}` for image deletion and image pool management.")
 
 bot.run(TOKEN)
