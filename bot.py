@@ -166,11 +166,11 @@ async def imgin(ctx, pool=None):
 		if r.headers['content-type'] not in imageFormats:
 			await ctx.send(f"Error: File must be of types: `{imageFormats}`")
 			return
-		imageName = f"{uuid.uuid4()}.{r.headers['content-type'][6:]}"
-		imageName = f"{imgPath}{pool}/{imageName}"
-		with open(imageName, 'wb') as outFile:
+		filename = f"{uuid.uuid4()}.{r.headers['content-type'][6:]}"
+		filedirname = f"{imgPath}{pool}/{filename}"
+		with open(filedirname, 'wb') as outFile:
 			shutil.copyfileobj(r.raw, outFile)
-			await ctx.send(f"Success: Image uploaded to pool: `{pool}`")
+			await ctx.send(f"Success: Image uploaded to pool: `{pool}`, filename: `{filename}`")
 
 
 # ADMIN COMMANDS
