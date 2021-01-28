@@ -114,7 +114,7 @@ async def img(ctx, pool=None):
 	filename = ''
 		
 	if pool != None and pool not in validPools:
-		await ctx.send("Improper pool input.\nUse `!imgop` to see valid image pools.")
+		await ctx.send("Error: Improper pool input.\nUse `!imgop` to see valid image pools.")
 		return
 
 	if pool == None:
