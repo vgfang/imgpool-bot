@@ -25,9 +25,9 @@ Imgpool bot is a discord bot for uploading images to image pools on a server and
    + `!imgtrun`: starts automatic image-posting task at a fixed time interval
       * `!imgtrun numOfMinutes`: with user-specified time interval
       * `!imgtrun numOfMinutes poolName`: user-specified time interval and pool
-   + `imgtlist`: list all automatic image-posting tasks
-   + `imgtstop taskId`: stop automatic image-posting task using its taskId
-   + `imgtstopall`: stop all automatic image-posting tasks
+   + `!imgtlist`: list all automatic image-posting tasks
+   + `!imgtstop taskId`: stop automatic image-posting task using its taskId
+   + `!imgtstopall`: stop all automatic image-posting tasks
 
 ## Deployment on GNU/Linux
 1. `git clone` the repository
